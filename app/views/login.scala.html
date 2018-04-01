@@ -1,0 +1,18 @@
+@(user: Form[models.form.UserLoginData])(implicit request: RequestHeader, messagesProvider: MessagesProvider,flash: play.api.mvc.Flash)
+@import helper._
+@main("Login page") {
+
+<h1>Welcome to Log In page!</h1>
+
+ @flash.get("status").getOrElse("Please Login")
+<form action="@routes.HomeController.onLogin()" method="POST">
+    @CSRF.formField
+
+@helper.inputText(user("username")) @* <- takes a MessagesProvider *@
+@helper.inputText(user("password"))  @* <- takes a MessagesProvider *@
+
+    <input type="submit" value="Login" />
+    <a href="@routes.HomeController.forgetPassword"><span class="glyphicon glyphicon-log-out"></span> Forget Password?</a>
+</form>
+}
+

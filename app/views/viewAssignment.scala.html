@@ -1,0 +1,40 @@
+@(AssignmentList: List[models.repositry.AssignmentData])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
+
+
+@import helper._
+@main("Assignments"){
+
+<br/>
+<br/>
+
+@flash.get("status").getOrElse("Admin, You can Delete Assignments.")
+
+<div class="container">
+    <h2>Assignments List</h2><br/>
+    @if(AssignmentList.isEmpty){
+    <h3>There are no pending Assignments.</h3>
+    } else{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width:33%">Title</th>
+            <th style="width:33%">Delete</th>
+        </tr>
+        </thead>
+
+        <tbody>@for(assignment<-AssignmentList){
+        <tr>
+            @helper.form(action=routes.AssignmentController.deleteAssignment(assignment.id)){
+            @CSRF.formField
+            <td>@assignment.title</td>
+            <td><button value="@assignment.title" >Delete</button></td>
+            }
+        </tr>
+        }
+        </tbody>
+    </table>
+    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    }
+</div>
+
+}

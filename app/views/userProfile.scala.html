@@ -1,0 +1,50 @@
+@(user: Form[models.form.UserSignupData])(implicit request: RequestHeader, messagesProvider: MessagesProvider,session: play.api.mvc.Session)
+@import helper._
+
+@main("Sign up") {
+
+@if(user.hasGlobalErrors) {
+<ul>
+    @for(error <- user.globalErrors) {
+    <li>@error.format</li>
+    }
+</ul>
+}
+
+<h1> Welcome @session.get("name").getOrElse("Anonymous")</h1>
+
+
+<h1>User Profile!</h1>
+<form action="@routes.HomeController.updateProfile()" method="POST">
+    @CSRF.formField
+
+
+    @helper.inputText(user("fname"),'_showConstraints -> false,'_label -> "First Name") @* <- takes
+    a MessagesProvider *@
+
+    @helper.inputText(user("mname"),'_showConstraints -> false,'_label -> "Middle Name") @* <- takes
+    a MessagesProvider *@
+    @helper.inputText(user("lname"),'_showConstraints -> false,'_label -> "Last Name") @* <- takes
+    a MessagesProvider *@
+    @helper.inputText(user("username"),'_showConstraints -> false,'_label -> "User Name") @* <-
+    takes a MessagesProvider *@
+    @helper.inputText(user("password"),'_showConstraints -> false,'_label -> "Password") @* <- takes
+    a MessagesProvider *@
+
+    @helper.inputText(user("confirmPassword"),'_showConstraints -> false,'_label -> "Re-enter Password") @* <- takes a MessagesProvider *@
+
+
+    @helper.inputText(user("mobile"),'_showConstraints -> false,'_label -> "Phone") @* <- takes a
+    MessagesProvider *@
+    @helper.inputText(user("age"),'_showConstraints -> false,'_label -> "Age") @* <- takes a
+    MessagesProvider *@
+    @helper.inputRadioGroup(user("hobby"), Seq("Singing" -> "Singing", "Dancing" -> "Dancing", "Cooking" -> "Cooking"))
+    @helper.inputRadioGroup(user("gender"), Seq("Male" -> "Male", "Female" -> "Female"))
+
+    <input type="submit" value="Update"/>
+    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+    </li>
+</form>
+
+
+}

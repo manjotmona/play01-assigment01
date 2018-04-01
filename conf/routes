@@ -1,0 +1,31 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+# An example controller showing a sample home page
+
+
+GET     /login                      controllers.HomeController.login
+GET     /getNormalUsers                      controllers.AdminController.getAllNormalUser
+POST     /changeStatus                     controllers.AdminController.changeUserStatus(user: String,status : Boolean)
+GET     /showProfile                      controllers.HomeController.showProfile
+GET     /signUp                      controllers.HomeController.signup
+GET     /                           controllers.HomeController.index
+POST    /store                           controllers.HomeController.storeData
+POST    /updateProfile                           controllers.HomeController.updateProfile
+GET     /profile                          controllers.HomeController.profile
+POST    /loginUser                           controllers.HomeController.onLogin
+GET     /logout                      controllers.HomeController.logout
+GET     /adminNavBar                     controllers.HomeController.adminNavBar
+GET    /getAssignment                           controllers.AssignmentController.assGetAddReq
+POST    /addAssignment                           controllers.AssignmentController.addAssignment
+GET    /viewAllAss                           controllers.AssignmentController.assGetViewReq
+POST    /deleteAssignment                           controllers.AssignmentController.deleteAssignment(id: Int)
+GET    /viewAllAssUser                          controllers.AssignmentController.assGetViewReqUser
+GET     /forget                      controllers.HomeController.forgetPassword
+POST    /reset                           controllers.HomeController.reset
+GET    /reset                           controllers.HomeController.reset
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

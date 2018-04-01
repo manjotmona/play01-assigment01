@@ -1,0 +1,45 @@
+@(AssignmentList: List[models.repositry.AssignmentData])(implicit request: RequestHeader)
+
+
+@import helper._
+@main("Assignments"){
+
+<br/>
+<br/>
+
+
+
+<div class="container">
+    <h2>Assignments List</h2><br/>
+    @if(AssignmentList.isEmpty){
+    <h3>There are no pending Assignments.</h3>
+    } else{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width:33%">Title</th>
+            <th style="width:33%">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>@for(assignment<-AssignmentList){
+        <tr>
+            @helper.form(action=routes.AssignmentController.deleteAssignment(assignment.id)){
+            @CSRF.formField
+            <td>@assignment.title</td>
+            <td>@assignment.description</td>
+            }
+        </tr>
+        }
+        </tbody>
+    </table>
+
+    }
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+</div>
+
+}

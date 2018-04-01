@@ -1,0 +1,46 @@
+@(usersList: List[models.repositry.UserSignupInfo])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
+
+
+@import helper._
+@main("Users"){
+
+<br/>
+<br/>
+
+@flash.get("status").getOrElse("Admin, You can change Normal user status")
+
+<div class="container">
+    <h2>Users List</h2><br/>
+    @if(usersList.isEmpty){
+    <h3>There are no users.</h3>
+    } else{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width:33%">Email</th>
+            <th style="width:33%">Enable User</th>
+            <th style="width:34%">Disable User</th>
+        </tr>
+        </thead>
+
+        <tbody>@for(user<-usersList){
+        <tr>
+            @helper.form(action=routes.AdminController.changeUserStatus(user.username,user.isEnabled)){
+            @CSRF.formField
+            <td>@user.username</td>
+            @if(user.isEnabled){
+            <td><button value="@user.username"  disabled>Enable</button></td>
+            <td><button value="@user.username" >Disable</button></td>
+            }else{
+            <td><button value="@user.username" >Enable</button></td>
+            <td><button value="@user.username" disabled>Disable</button></td>
+            }}
+        </tr>
+        }
+        </tbody>
+    </table>
+    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    }
+</div>
+
+}

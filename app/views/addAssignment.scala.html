@@ -1,0 +1,16 @@
+@(assignment: Form[models.form.Assignment])(implicit request: RequestHeader, messagesProvider: MessagesProvider, flash: play.api.mvc.Flash)
+@import helper._
+@main("Add assignment page") {
+
+
+
+@flash.get("AssStatus").getOrElse("Fill Form to add assignment")
+<form action="@routes.AssignmentController.addAssignment()" method="POST">
+    @CSRF.formField
+
+    @helper.inputText(assignment("title")) @* <- takes a MessagesProvider *@
+    @helper.inputText(assignment("description"))  @* <- takes a MessagesProvider *@
+
+    <input type="submit" value="Add Assignment" />
+</form>
+}
