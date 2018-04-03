@@ -5,14 +5,19 @@
 <h1>Welcome to Log In page!</h1>
 
  @flash.get("status").getOrElse("Please Login")
+<br>
+<br>
+<div class="container">
 <form action="@routes.HomeController.onLogin()" method="POST">
     @CSRF.formField
 
-@helper.inputText(user("username")) @* <- takes a MessagesProvider *@
-@helper.inputText(user("password"))  @* <- takes a MessagesProvider *@
+@helper.inputText(user("username"),'_showConstraints -> false,'_label -> "Username") @* <- takes a MessagesProvider *@
+@helper.inputText(user("password"),'_showConstraints -> false,'_label -> "Password")  @* <- takes a MessagesProvider *@
 
     <input type="submit" value="Login" />
+
     <a href="@routes.HomeController.forgetPassword"><span class="glyphicon glyphicon-log-out"></span> Forget Password?</a>
 </form>
+</div>
 }
 

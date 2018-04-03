@@ -39,6 +39,21 @@ class UserSignupForm {
       }
   })
 
+  val nameConstraint: Constraint[String] = Constraint("constraints.namecheck")({
+    mobile =>
+      val errors = mobile match {
+        case allLetters()
+
+        => Nil
+        case _ => Seq(ValidationError("Please Enter a valid name.Name should have only have letters."))
+      }
+      if (errors.isEmpty) {
+        Valid
+      } else {
+        Invalid(errors)
+      }
+  })
+
   val mobileConstraint: Constraint[String] = Constraint("constraints.mobilecheck")({
     mobile =>
       val errors = mobile match {
@@ -54,20 +69,21 @@ class UserSignupForm {
       }
   })
 
-
+val eighteen = 18
+  val seventyFive = 75
 
   val userSignupForm = Form(mapping(
-    "fname" -> text.verifying("This should not be empty", _.nonEmpty),
+    "fname" -> nonEmptyText.verifying(nameConstraint),
     "mname" -> optional(text),
 
 
-    "lname" -> text.verifying("This should not be empty", _.nonEmpty),
+    "lname" -> nonEmptyText.verifying(nameConstraint),
     "username" -> text.verifying("This should not be empty", _.nonEmpty),
     "password" -> nonEmptyText.verifying(passwordCheckConstraint),
     "confirmPassword" -> text.verifying("This should not be empty", _.nonEmpty),
     "mobile" -> nonEmptyText.verifying(mobileConstraint),
     "gender" -> nonEmptyText,
-    "age" -> number.verifying(min(18), max(75)),
+    "age" -> number.verifying(min(eighteen), max(seventyFive)),
 
     "hobby" -> nonEmptyText
 

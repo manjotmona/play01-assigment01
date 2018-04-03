@@ -1,4 +1,4 @@
-@(usersList: List[models.repositry.UserSignupInfo])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
+@(usersList: List[models.repositry.UserSignupInfo])(implicit request: RequestHeader, flash: play.api.mvc.Flash,session: play.api.mvc.Session)
 
 
 @import helper._
@@ -6,6 +6,10 @@
 
 <br/>
 <br/>
+<div>
+    @adminNavBar()
+
+</div>
 
 @flash.get("status").getOrElse("Admin, You can change Normal user status")
 
@@ -39,7 +43,7 @@
         }
         </tbody>
     </table>
-    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
     }
 </div>
 

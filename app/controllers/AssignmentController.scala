@@ -19,14 +19,14 @@ class AssignmentController @Inject()(cc: ControllerComponents,
     assignmentForm: AssignmentForm, assignmentRepo: AssignmentClass)
   extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
-  def assGetAddReq() = {
+  def assGetAddReq(): Action[AnyContent] = {
     Action { implicit request: Request[AnyContent] =>
-      Ok(views.html.addAssignment(assignmentForm.AssignmentFormMapping))
+      Ok(views.html.addAssignment(assignmentForm.assignmentFormMapping))
     }
   }
 
 
-  def assGetViewReq() = {
+  def assGetViewReq(): Action[AnyContent] = {
     Action.async { implicit request: Request[AnyContent] =>
       assignmentRepo.getAllAssignment.flatMap {
         assList => Future.successful(Ok(views.html.viewAssignment(assList)))
@@ -34,7 +34,7 @@ class AssignmentController @Inject()(cc: ControllerComponents,
     }
   }
 
-  def assGetViewReqUser() = {
+  def assGetViewReqUser(): Action[AnyContent] = {
     Action.async { implicit request: Request[AnyContent] =>
       assignmentRepo.getAllAssignment.flatMap {
         assList => Future.successful(Ok(views.html.AssList(assList)))
@@ -42,20 +42,9 @@ class AssignmentController @Inject()(cc: ControllerComponents,
     }
   }
 
-
-//  def showAssignment = {
-//    Action.async { implicit request: Request[AnyContent] =>
-//      assignmentRepo.getAllAssignment.flatMap {
-//        assList => Future.successful(Ok(views.html.displayAssignments(assList)))
-//      }
-//    }
-//  }
-
-  def deleteAssignment(id: Int) = {
+  def deleteAssignment(id: Int): Action[AnyContent] = {
     Action.async { implicit request: Request[AnyContent] =>
       assignmentRepo.deleteAssignment(id).flatMap {
-        //assList=> Future.successful(Ok(views.html.viewAssignment(assList)))
-
         case true =>
           Future
             .successful(Redirect(routes.AssignmentController.assGetViewReq())
@@ -64,15 +53,13 @@ class AssignmentController @Inject()(cc: ControllerComponents,
           Future
             .successful(Redirect(routes.AssignmentController.assGetViewReq())
               .flashing("status" -> "Could Not Delete Assignment."))
-
-
       }
     }
   }
 
   def addAssignment: Action[AnyContent] = {
     Action.async { implicit request =>
-      assignmentForm.AssignmentFormMapping.bindFromRequest.fold(
+      assignmentForm.assignmentFormMapping.bindFromRequest.fold(
         formsWithErrors => {
           Future.successful(BadRequest(views.html.addAssignment(formsWithErrors)))
         },
@@ -89,16 +76,11 @@ class AssignmentController @Inject()(cc: ControllerComponents,
                 .successful(Redirect(routes.AssignmentController.assGetAddReq())
                   .flashing("AssStatus" -> "CouldNot Add Assignment."))
 
-
           }
 
         }
       )
-
-
-      //Future.successful(Ok("hello"))
     }
   }
-
 
 }

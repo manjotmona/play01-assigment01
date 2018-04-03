@@ -1,16 +1,20 @@
-@(assignment: Form[models.form.Assignment])(implicit request: RequestHeader, messagesProvider: MessagesProvider, flash: play.api.mvc.Flash)
+@(assignment: Form[models.form.Assignment])(implicit request: RequestHeader, messagesProvider: MessagesProvider, flash: play.api.mvc.Flash,session: play.api.mvc.Session)
 @import helper._
 @main("Add assignment page") {
 
+<div>
+    @adminNavBar()
 
-
+</div>
 @flash.get("AssStatus").getOrElse("Fill Form to add assignment")
+<div class="container">
 <form action="@routes.AssignmentController.addAssignment()" method="POST">
     @CSRF.formField
 
-    @helper.inputText(assignment("title")) @* <- takes a MessagesProvider *@
-    @helper.inputText(assignment("description"))  @* <- takes a MessagesProvider *@
+    @helper.inputText(assignment("title"),'_showConstraints -> false,'_label -> "Title") @* <- takes a MessagesProvider *@
+    @helper.inputText(assignment("description"),'_showConstraints -> false,'_label -> "Description")  @* <- takes a MessagesProvider *@
 
     <input type="submit" value="Add Assignment" />
 </form>
+</div>
 }

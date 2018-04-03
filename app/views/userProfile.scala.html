@@ -3,6 +3,10 @@
 
 @main("Sign up") {
 
+<div>
+    @profile()
+</div>
+
 @if(user.hasGlobalErrors) {
 <ul>
     @for(error <- user.globalErrors) {
@@ -11,10 +15,11 @@
 </ul>
 }
 
-<h1> Welcome @session.get("name").getOrElse("Anonymous")</h1>
 
-
-<h1>User Profile!</h1>
+<h3>Edit Profile</h3>
+<h4> You can update personal information here.</h4>
+<br>
+<div class="container">
 <form action="@routes.HomeController.updateProfile()" method="POST">
     @CSRF.formField
 
@@ -38,13 +43,12 @@
     MessagesProvider *@
     @helper.inputText(user("age"),'_showConstraints -> false,'_label -> "Age") @* <- takes a
     MessagesProvider *@
-    @helper.inputRadioGroup(user("hobby"), Seq("Singing" -> "Singing", "Dancing" -> "Dancing", "Cooking" -> "Cooking"))
-    @helper.inputRadioGroup(user("gender"), Seq("Male" -> "Male", "Female" -> "Female"))
+    @helper.inputRadioGroup(user("hobby"), Seq("Singing" -> "Singing", "Dancing" -> "Dancing", "Cooking" -> "Cooking"),'_showConstraints -> false,'_label -> "Hobby")
+    @helper.inputRadioGroup(user("gender"), Seq("Male" -> "Male", "Female" -> "Female"),'_showConstraints -> false,'_label -> "Enter Existing Username")
 
     <input type="submit" value="Update"/>
-    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-    </li>
-</form>
 
+</form>
+</div>
 
 }

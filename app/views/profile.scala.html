@@ -1,6 +1,6 @@
 @()(implicit session: play.api.mvc.Session)
 
-
+@main("User Options"){
 <h1> Welcome @session.get("name").getOrElse("Anonymous")</h1>
 
 
@@ -21,4 +21,4 @@
     </div>
 </nav>
 
-
+}

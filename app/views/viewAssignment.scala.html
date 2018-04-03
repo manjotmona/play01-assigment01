@@ -1,4 +1,4 @@
-@(AssignmentList: List[models.repositry.AssignmentData])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
+@(AssignmentList: List[models.repositry.AssignmentData])(implicit request: RequestHeader, flash: play.api.mvc.Flash,session: play.api.mvc.Session)
 
 
 @import helper._
@@ -7,7 +7,14 @@
 <br/>
 <br/>
 
-@flash.get("status").getOrElse("Admin, You can Delete Assignments.")
+<div>
+    @adminNavBar()
+
+</div>
+<div>
+    @flash.get("status").getOrElse("Admin, You can Delete Assignments.")
+</div>
+
 
 <div class="container">
     <h2>Assignments List</h2><br/>
@@ -33,7 +40,7 @@
         }
         </tbody>
     </table>
-    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
     }
 </div>
 

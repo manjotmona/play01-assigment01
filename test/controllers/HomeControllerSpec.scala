@@ -1,9 +1,18 @@
 package controllers
 
+import models.form.{UserLoginForm, UserSignupData, UserSignupForm, forgetPasswordForm}
+import models.repositry.{UserSignupClass, UserSignupInfo}
+import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play._
+import org.mockito.Mockito.when
 import org.scalatestplus.play.guice._
+import org.specs2.mock.Mockito
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Session}
 import play.api.test._
 import play.api.test.Helpers._
+import play.api.test.CSRFTokenHelper._
+import play.libs.Scala
+
 
 /**
  * Add your spec here.
@@ -11,35 +20,140 @@ import play.api.test.Helpers._
  *
  * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
  */
-class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
+class HomeControllerSpec extends PlaySpec with Mockito {
 
-  "HomeController GET" should {
+  //"should store a user" in {
+ //   val controller = getMockedObject
 
-    "render the index page from a new instance of controller" in {
-      val controller = new HomeController(stubControllerComponents())
-      val home = controller.index().apply(FakeRequest(GET, "/"))
+   // val userInformation = UserInformation("ankit","barthwal","test@example.com")
+ //  val user = UserSignupData("test",None,"test","test","test","test","1234567891","Female",29,"Singing")
 
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
-    }
 
-    "render the index page from the application" in {
-      val controller = inject[HomeController]
-      val home = controller.index().apply(FakeRequest(GET, "/"))
+   // val userForm = new UserSignupForm {}.userSignupForm.fill(user)
+    //val payload = controller.userrepoClass.
 
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
-    }
 
-    "render the index page from the router" in {
-      val request = FakeRequest(GET, "/")
-      val home = route(app, request).get
+//    when(controller.userForm.userInfoForm) thenReturn userForm
+//    when(controller.userInfoRepo.getUser("test@example.com")) thenReturn Future.successful(None)
+//    when(controller.userInfoRepo.store(payload)) thenReturn Future.successful(Done)
 
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
-    }
+
+//    val request = FakeRequest(POST, "/store").withFormUrlEncodedBody("csrfToken"
+//                                                                     -> "9c48f081724087b31fcf6099b7eaf6a276834cd9-1487743474314-cda043ddc3d791dc500e66ea", "fname" -> "ankit",
+//      "lname" -> "barthwal", "email" -> "test@example.com")
+//      .withCSRFToken
+//
+//    val result = controller.homeController.storeData(request)
+   // status(result) must equal(OK)
+ // }
+
+  "index should get a HTML page" in{
+    val controller = getMockedObject
+    val result = controller.homeController.index().apply(FakeRequest())
+    status(result) must equal(OK)
+
+
   }
+  "profile should get a HTML page" in{
+    val controller = getMockedObject
+    val result = controller.homeController.profile().apply(FakeRequest())
+    status(result) must equal(OK)
+
+  }
+
+  "forgetPassword should get a HTML page" in{
+    val controller = getMockedObject
+    val userForm = new forgetPasswordForm {}.userLoginForm
+
+    when(controller.userforgetForm.userLoginForm) thenReturn userForm
+
+    val result = controller.homeController.forgetPassword().apply(FakeRequest().withCSRFToken)
+    status(result) must equal(OK)
+
+  }
+  "showProfile should get auto fill form when user is connected" in{
+    val controller = getMockedObject
+    val user = UserSignupData("test",None,"test","test","test","test","1234567891","Female",29,"Singing")
+
+    val userForm = new UserSignupForm {}.userSignupForm.fill(user)
+    val userFormforget = new forgetPasswordForm {}.userLoginForm
+    val sessionCookie = Session.encodeAsCookie(Session(Map("key" -> "value")))
+
+    when(controller.userSignupForm.userSignupForm) thenReturn userForm
+    when(controller.userforgetForm.userLoginForm) thenReturn userFormforget
+   // when
+  //  when(controller.homeController.onLogin()) thenReturn Action.g
+
+
+    val result = controller.homeController.forgetPassword().apply(FakeRequest().withSession("name"->"test"))
+    status(result) must equal(OK)
+
+  }
+
+
+  "login should get a HTML page" in{
+    val controller = getMockedObject
+    val userForm = new UserLoginForm {}.userLoginForm
+
+    when(controller.userLoginForm.userLoginForm) thenReturn userForm
+
+
+    val result = controller.homeController.login().apply(FakeRequest().withCSRFToken)
+    status(result) must equal(OK)
+
+  }
+  "signup should get a HTML page" in{
+    val controller = getMockedObject
+    val userForm = new UserSignupForm {}.userSignupForm
+
+    when(controller.userSignupForm.userSignupForm) thenReturn userForm
+
+
+    val result = controller.homeController.signup().apply(FakeRequest().withCSRFToken)
+    status(result) must equal(OK)
+
+  }
+
+  "logout should get a HTML page" in{
+    val controller = getMockedObject
+    val userForm = new UserSignupForm {}.userSignupForm
+
+    when(controller.userSignupForm.userSignupForm) thenReturn userForm
+
+
+    val result = controller.homeController.logout().apply(FakeRequest().withCSRFToken)
+    status(result) must equal(303)
+
+  }
+  "adminNavBar should get a HTML page" in{
+    val controller = getMockedObject
+
+    val result = controller.homeController.adminNavBar().apply(FakeRequest().withCSRFToken)
+    status(result) must equal(OK)
+
+  }
+
+
+
+
+
+  def getMockedObject: TestObjects = {
+    val mockedUserLoginForm = mock[UserLoginForm]
+    val mockedUserSignupForm= mock[UserSignupForm]
+    val mockedUserRepo= mock[UserSignupClass]
+    val mockedForgetForm= mock[forgetPasswordForm]
+
+    val controller = new HomeController(stubControllerComponents(), mockedUserLoginForm, mockedUserSignupForm,mockedUserRepo, mockedForgetForm)
+
+    TestObjects(stubControllerComponents(), mockedUserLoginForm, mockedUserSignupForm,mockedUserRepo,mockedForgetForm, controller)
+  }
+
+  case class TestObjects(controllerComponent: ControllerComponents,
+      userLoginForm: UserLoginForm,
+      userSignupForm: UserSignupForm,
+      userrepoClass: UserSignupClass,
+      userforgetForm:forgetPasswordForm,
+      homeController: HomeController)
 }
+
+

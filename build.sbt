@@ -11,6 +11,8 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+libraryDependencies += ehcache
+libraryDependencies += specs2 % Test
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "3.0.0",

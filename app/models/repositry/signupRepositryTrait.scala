@@ -6,6 +6,8 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.driver.JdbcProfile
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import slick.lifted.ProvenShape
+
 
 
 case class UserSignupInfo(fname: String,
@@ -56,7 +58,7 @@ trait signupRepositryTrait extends HasDatabaseConfigProvider[JdbcProfile] {
 
 
 
-    def * = {
+    def * : ProvenShape[UserSignupInfo] = {
       (fname, mname, lname, username, password, confirmPassword, mobile, gender, age, hobby,isAdmin,isEnabled) <>
       (UserSignupInfo.tupled, UserSignupInfo.unapply)
     }
@@ -110,7 +112,7 @@ trait UserTraitImplementation extends UserRepoTrait {
     db.run(joinQuery.to[List].result)
   }
 
-  def changeUserStatus(user: String,status:Boolean) : Future[Boolean] = {
+  def changeUserStatus(user: String,status: Boolean) : Future[Boolean] = {
   //db.run(userProfileQuery.filter(_.username.toLowerCase == user.toLowerCase).map(user => user.isEnabled)
   //  .update(!status)) map(_>0)
 
@@ -122,7 +124,7 @@ trait UserTraitImplementation extends UserRepoTrait {
 
 
   }
-  def updatePassword(username: String, password:String, confirmpassword:String) : Future[Boolean] = {
+  def updatePassword(username: String, password: String, confirmpassword: String) : Future[Boolean] = {
     //db.run(userProfileQuery.filter(_.username.toLowerCase == user.toLowerCase).map(user => user.isEnabled)
     //  .update(!status)) map(_>0)
 
@@ -132,16 +134,7 @@ trait UserTraitImplementation extends UserRepoTrait {
      .update(password,confirmpassword)) map (_ > 0)
 
 
-
   }
-
-
-
-
-  //  def fetchByEmail(email: String): Future[Option[UserInfo]] = {
-  //    db.run(userProfileQuery.filter(_.email === email).result.headOption)
-  //  }
-
 
 }
 

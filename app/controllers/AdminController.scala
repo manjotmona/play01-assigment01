@@ -7,7 +7,7 @@ import scala.concurrent.Future
 import models.form.{UserLoginForm, UserSignupData, UserSignupForm}
 import models.repositry.UserSignupClass
 import play.api.Logger
-import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents, Request}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
@@ -22,7 +22,7 @@ class AdminController @Inject()(cc: ControllerComponents,
   extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
 
-  def getAllNormalUser = {
+  def getAllNormalUser: Action[AnyContent] = {
     Logger.info("getting normal users")
     Action.async { implicit request: Request[AnyContent] =>
       Logger.info("getting")
@@ -36,7 +36,7 @@ class AdminController @Inject()(cc: ControllerComponents,
 
     }
 
-    def changeUserStatus(user: String,status:Boolean ) = {
+    def changeUserStatus(user: String, status: Boolean ): Action[AnyContent] = {
       Logger.info("Change user status")
       Action.async { implicit request: Request[AnyContent] =>
         Logger.info("changing")
@@ -44,30 +44,11 @@ class AdminController @Inject()(cc: ControllerComponents,
           case true =>
             Logger.info("changed")
             Future
-              .successful(Redirect(routes.AdminController.getAllNormalUser()).flashing("changeStatus" -> "user status updated successfully"))
+              .successful(Redirect(routes.AdminController.getAllNormalUser()).flashing("status" -> "user status updated successfully"))
           case false => Logger.info("change unsuccessful")
             Future
               .successful(Redirect(routes.AdminController.getAllNormalUser()).flashing("status" -> "Could not update user status"))
         }
       }
-        // Future.successful(Ok())
-
-
-
-
-      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }

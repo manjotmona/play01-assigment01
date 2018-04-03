@@ -1,13 +1,14 @@
-@(AssignmentList: List[models.repositry.AssignmentData])(implicit request: RequestHeader)
+@(AssignmentList: List[models.repositry.AssignmentData])(implicit request: RequestHeader,session: play.api.mvc.Session)
 
 
 @import helper._
 @main("Assignments"){
+<div>
+    @profile()
+</div>
 
 <br/>
 <br/>
-
-
 
 <div class="container">
     <h2>Assignments List</h2><br/>
@@ -35,11 +36,7 @@
     </table>
 
     }
-    <br>
-    <br>
-    <br>
-    <br>
-    <a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+
 </div>
 
 }

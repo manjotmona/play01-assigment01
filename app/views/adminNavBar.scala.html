@@ -1,10 +1,10 @@
 @()(implicit session: play.api.mvc.Session)
-
+@main("Admin Options"){
 <h1> Welcome @session.get("name").getOrElse("Anonymous")</h1>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">User Details</a>
+            <a class="navbar-brand" href="#">Admin Details</a>
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="">Profile</a></li>
@@ -18,3 +18,4 @@
         </ul>
     </div>
 </nav>
+}

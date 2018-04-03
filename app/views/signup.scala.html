@@ -14,6 +14,8 @@
 
 
 <h1>Welcome to signUp page!</h1>
+<br>
+<div class="container">
 <form action="@routes.HomeController.storeData()" method="POST">
     @CSRF.formField
 
@@ -36,11 +38,11 @@
     MessagesProvider *@
     @helper.inputText(user("age"),'_showConstraints -> false,'_label -> "Age") @* <- takes a
     MessagesProvider *@
-    @helper.inputRadioGroup(user("hobby"), Seq("Singing" -> "Singing", "Dancing" -> "Dancing", "Cooking" -> "Cooking"))
-    @helper.inputRadioGroup(user("gender"), Seq("Male" -> "Male", "Female" -> "Female"))
+    @helper.inputRadioGroup(user("hobby"), Seq("Singing" -> "Singing", "Dancing" -> "Dancing", "Cooking" -> "Cooking"), '_showConstraints -> false,'_label -> "Hobby")
+    @helper.inputRadioGroup(user("gender"), Seq("Male" -> "Male", "Female" -> "Female"),'_showConstraints -> false,'_label -> "Gender")
 
     <input type="submit" value="Sign up"/>
 </form>
-
+</div>
 
 }
