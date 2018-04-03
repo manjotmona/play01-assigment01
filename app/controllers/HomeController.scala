@@ -137,7 +137,7 @@ class HomeController @Inject()(cc: ControllerComponents,
                 .successful(Redirect(routes.HomeController.index()).flashing("status" -> "Failure"))
           }})}
   }
-  def onLogin(): Action[AnyContent] = {
+  def onLogin: Action[AnyContent] = {
     Action.async { implicit request =>
       userLoginForm.userLoginForm.bindFromRequest.fold(
         formWithErrors => {
@@ -177,7 +177,7 @@ class HomeController @Inject()(cc: ControllerComponents,
                   .flashing("status" -> "No such user exists"))
           }})}
   }
-  def reset(): Action[AnyContent] = {
+  def reset: Action[AnyContent] = {
     Action.async { implicit request =>
       forgetForm.userLoginForm.bindFromRequest.fold(
         formWithErrors => {
@@ -194,7 +194,7 @@ class HomeController @Inject()(cc: ControllerComponents,
               case false => Logger.info("no user")
                 Future
                   .successful(Redirect(routes.HomeController.reset())
-                    .flashing("status" -> "Password Not Changed"))
+                    .flashing("status" -> "User does not Exist"))
             }})}
   }
 }

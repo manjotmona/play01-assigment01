@@ -44,10 +44,19 @@ trait AssgnmentTraitImplementation extends AssigmentRepoTrait {
 
   import profile.api._
 
+  /**
+   *
+   * @param newAssignment Assignment to add.
+   * @return Returns Boolean in Future if query is successful.
+   */
   def add(newAssignment: AssignmentData): Future[Boolean] = {
     db.run(assignmentQuery += newAssignment) map (_ > 0)
-
   }
+
+  /**
+   *This method displays all assignments.
+   * @return List of all assignments in Future.
+   */
 
   def getAllAssignment: Future[List[AssignmentData]] = {
     val joinQuery = for {
@@ -55,10 +64,14 @@ trait AssgnmentTraitImplementation extends AssigmentRepoTrait {
     } yield {
       user
     }
-
     db.run(joinQuery.to[List].result)
   }
 
+  /**
+   *Method to delete assignment.
+   * @param id Id of assignment to be deleted.
+   * @return Returns boolean in Future on successful deletion.
+   */
   def deleteAssignment(id: Int): Future[Boolean] = {
 
     db.run(assignmentQuery.filter(_.id === id).delete) map (_ > 0)

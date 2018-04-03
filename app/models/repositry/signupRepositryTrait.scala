@@ -82,16 +82,30 @@ trait UserTraitImplementation extends UserRepoTrait {
 
   import profile.api._
 
+  /**
+   * This method stores the data in database.
+   * @param userProfile User information we want to save.
+   * @return Returns result in Boolean.
+   */
   def store(userProfile: UserSignupInfo): Future[Boolean] = {
     db.run(userProfileQuery += userProfile) map (_ > 0)
-
-    // Future(true)
   }
 
+  /**
+   * This method finds user by username.
+   * @param userLogin username of user in string.
+   * @return User in Optional Future.
+   */
   def findByUsername(userLogin: String): Future[Option[UserSignupInfo]] = {
     val queryResult = userProfileQuery.filter(_.username.toLowerCase === userLogin.toLowerCase).result.headOption
     db.run(queryResult)
   }
+
+  /**
+   * Updates Personal details of user.
+   * @param userInfo Takes user parameter.
+   * @return Returns Boolean in Future.
+   */
 
   def updateUserProfile(userInfo: UserSignupInfo): Future[Boolean] = {
     db.run(userProfileQuery.filter(_.username.toLowerCase === userInfo.username.toLowerCase)
@@ -99,10 +113,10 @@ trait UserTraitImplementation extends UserRepoTrait {
       .update(userInfo.fname, userInfo.mname, userInfo.lname,userInfo.mobile,userInfo.gender,userInfo.age,userInfo.hobby)) map (_ > 0)
   }
 
-//  def getAllNormalUser1: Future[List[UserSignupInfo]] = {
-//    val queryResult = userProfileQuery.filter(_.isAdmin === false).to[List].result
-//    db.run(queryResult)
-//  }
+  /**
+   * Method to get all list of all normal users.
+   * @return Returns List of Users in Future.
+   */
 
   def getAllNormalUser: Future[List[UserSignupInfo]] = {
     val joinQuery = for {
@@ -112,30 +126,32 @@ trait UserTraitImplementation extends UserRepoTrait {
     db.run(joinQuery.to[List].result)
   }
 
+  /**
+   * Method changes the status of user.
+   * @param user The user whose status you want to change.
+   * @param status Current status.
+   * @return Returns Boolean result in Future.
+   */
+
   def changeUserStatus(user: String,status: Boolean) : Future[Boolean] = {
-  //db.run(userProfileQuery.filter(_.username.toLowerCase == user.toLowerCase).map(user => user.isEnabled)
-  //  .update(!status)) map(_>0)
-
-
     db.run(userProfileQuery.filter(_.username.toLowerCase === user.toLowerCase)
       .map(user => user.isEnabled)
       .update(!status)) map (_ > 0)
-
-
-
   }
-  def updatePassword(username: String, password: String, confirmpassword: String) : Future[Boolean] = {
-    //db.run(userProfileQuery.filter(_.username.toLowerCase == user.toLowerCase).map(user => user.isEnabled)
-    //  .update(!status)) map(_>0)
 
+  /**
+   * This method updates password.
+   * @param username User whose pssword we want to change.
+   * @param password New Password.
+   * @param confirmpassword Confirm Password.
+   * @return
+   */
+  def updatePassword(username: String, password: String, confirmpassword: String) : Future[Boolean] = {
 
     db.run(userProfileQuery.filter(_.username.toLowerCase === username.toLowerCase)
       .map(user => (user.password,user.confirmPassword))
      .update(password,confirmpassword)) map (_ > 0)
-
-
   }
-
 }
 
 

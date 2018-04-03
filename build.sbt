@@ -22,6 +22,8 @@ libraryDependencies ++= Seq(
   "com.h2database" % "h2" % "1.4.196"
 )
 
+coverageExcludedPackages := "controllers.javascript;router;"
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "edu.knoldus.controllers._"

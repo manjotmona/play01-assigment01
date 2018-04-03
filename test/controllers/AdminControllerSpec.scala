@@ -43,6 +43,18 @@ class AdminControllerSpec extends PlaySpec with Mockito{
     status(result) must equal(303)
 
   }
+  "changeUserStatus should not delete assignment on database error" in {
+    val controller = getMockedObject
+
+    //val user = UserSignupInfo("test",None,"test","test","test","test","1234567891","Female",29,"Singing",false,true)
+    // val user1 = UserSignupData("test",None,"test","test","test","test","1234567891","Female",29,"Singing")
+    // val assignment = AssignmentData(1, "title", "Description")
+    when(controller.userrepoClass.changeUserStatus("test",true)) thenReturn Future.successful(false)
+    val result = controller.adminController.changeUserStatus("test",true)
+      .apply(FakeRequest().withCSRFToken)
+    status(result) must equal(303)
+
+  }
 
 
 

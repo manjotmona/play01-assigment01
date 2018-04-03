@@ -21,7 +21,10 @@ class AdminController @Inject()(cc: ControllerComponents,
     userSignupRepo: UserSignupClass)
   extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
-
+  /**
+   * Action to get handle user get request.
+   * @return
+   */
   def getAllNormalUser: Action[AnyContent] = {
     Logger.info("getting normal users")
     Action.async { implicit request: Request[AnyContent] =>
@@ -29,12 +32,17 @@ class AdminController @Inject()(cc: ControllerComponents,
       userSignupRepo.getAllNormalUser.flatMap {
         user => Future.successful(Ok(views.html.DisplayUser(user)))
       }
-      // Future.successful(Ok())
-
 
     }
 
     }
+
+  /**
+   * This Action handles user status change request.
+   * @param user
+   * @param status
+   * @return
+   */
 
     def changeUserStatus(user: String, status: Boolean ): Action[AnyContent] = {
       Logger.info("Change user status")
